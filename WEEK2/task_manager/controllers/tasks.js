@@ -77,6 +77,32 @@ exports.updateTask = (req, res) => {
   res.json(tasks[idx]);
 };
 
+exports.toggleTask = (req,res) =>{
+  const task = tasks.find((t) => t.id = parseInt(req.params.id));
+
+  if(!task){
+    return res.status(404).json({message: 'Task not found'});
+  }
+
+  task.completed = !task.completed;
+
+  res.json(task);
+}
+
+exports.taskstats = (req,res) => {
+  const total = tasks.length;
+
+  const completed = tasks.filter((t) => t.completed).length;
+  
+  const pending = total - completed;
+
+  res.json({
+    total,
+    completed,
+    pending,
+  });
+}
+
 // DELETE /tasks/:id
 exports.deleteTask = (req, res) => {
   const id = parseInt(req.params.id);
